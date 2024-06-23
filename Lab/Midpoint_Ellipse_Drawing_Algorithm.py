@@ -1,18 +1,18 @@
 import pygame
 import math
+import sys
 
 pygame.init()
-screen = pygame.display.set_mode((1200, 720))
+screen = pygame.display.set_mode((500, 500))
 running = True
 
-font = pygame.font.Font(None, 36)
 
 
 def midPointEllipseAlgo(xinp, yinp, rx, ry):
     x = 0
     y = ry
 
-    # Region 1
+   
     p1 = (ry**2) - (rx**2 * ry) + (0.25 * rx**2)
     dx = 2 * ry**2 * x
     dy = 2 * rx**2 * y
@@ -34,7 +34,6 @@ def midPointEllipseAlgo(xinp, yinp, rx, ry):
             dy -= 2 * rx**2
             p1 += dx - dy + ry**2
 
-    # Region 2
     p2 = (ry**2) * (x + 0.5)**2 + (rx**2) * (y - 1)**2 - (rx**2 * ry**2)
 
     while y >= 0:
@@ -54,14 +53,14 @@ def midPointEllipseAlgo(xinp, yinp, rx, ry):
             dy -= 2 * rx**2
             p2 += dx - dy + rx**2
 
-
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
 
     screen.fill("black")
-    midPointEllipseAlgo(int(1200 / 2), int(720 / 2), 200, 100)
+    midPointEllipseAlgo(int(250), int(250), 50, 25)
     pygame.display.update()
 
 pygame.quit()
+sys.exit()

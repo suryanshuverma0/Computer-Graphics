@@ -1,0 +1,104 @@
+import pygame as pg
+import sys
+import math
+
+pg.init()
+WIDTH, HEIGHT = 700, 700
+screen = pg.display.set_mode((WIDTH, HEIGHT))
+pg.display.set_caption("Solar System Simulation")
+
+# Colors
+GOLD = (255, 255, 255)
+WHITE = (0, 0, 0)
+
+# Function to draw an ellipse (circle)
+def draw_ellipse(xc, yc, rx, ry):
+    x = 0
+    y = ry
+    p1 = ry ** 2 + 0.25 * rx ** 2 - ry * rx ** 2
+    while 2 * (ry ** 2) * x <= 2 * y * rx ** 2:
+        if p1 < 0:
+            x += 1
+            y = y
+            p1 += 2 * (ry ** 2) * x + ry ** 2
+        else:
+            x += 1
+            y -= 1
+            p1 += 2 * (ry ** 2) * x - 2 * y * rx ** 2
+
+        screen.set_at((x + xc, y + yc), GOLD)
+        screen.set_at((-x + xc, y + yc), GOLD)
+        screen.set_at((x + xc, -y + yc), GOLD)
+        screen.set_at((-x + xc, -y + yc), GOLD)
+
+    p2 = ry ** 2 * (x + 0.5) ** 2 + rx ** 2 * (y - 1) ** 2 - (rx ** 2) * ry ** 2
+    while y != 0:
+        if p2 > 0:
+            y -= 1
+            x = x
+            p2 -= 2 * rx ** 2 * y + rx ** 2
+        else:
+            y -= 1
+            x += 1
+            p2 = p2 - 2 * rx ** 2 * y + 2 * ry ** 2 * x + rx ** 2
+
+        screen.set_at((x + xc, y + yc), GOLD)
+        screen.set_at((-x + xc, y + yc), GOLD)
+        screen.set_at((x + xc, -y + yc), GOLD)
+        screen.set_at((-x + xc, -y + yc), GOLD)
+
+
+def main():
+    orbit_radius_x = 200  # Semi-major axis of the ellipse
+    orbit_radius_y = 100  # Semi-minor axis of the ellipse
+    orbit_speed = 0.1  # Speed of orbiting
+    orbit_angle = 0  # Initial angle for orbiting
+
+    while True:
+        for event in pg.event.get():
+            if event.type == pg.QUIT:
+                pg.quit()
+                sys.exit()
+
+        # Clear the screen
+        screen.fill(WHITE)
+        pg.draw.circle(screen, "yellow", (300,300), 50)
+
+        # Draw the elliptical orbits
+        draw_ellipse(300, 300, 200, 100)
+        draw_ellipse(300, 300, 300, 150)
+        draw_ellipse(300, 300, 350, 200)
+
+
+        # Calculate the positions of orbiting circles
+        planet1_x = 300 + orbit_radius_x * math.cos(orbit_angle)
+        planet1_y = 300 + orbit_radius_y * math.sin(orbit_angle)
+        
+
+        planet2_x = 300 + orbit_radius_x * 1.5 * math.cos(orbit_angle * 0.7)
+        planet2_y = 300 + orbit_radius_y * 1.5 * math.sin(orbit_angle * 0.7)
+
+
+        planet3_x = 300 + orbit_radius_x * 1.75 * math.cos(orbit_angle * 0.6)
+        planet3_y = 300 + orbit_radius_y * 2 * math.sin(orbit_angle * 0.6)
+
+
+        planet4_x = 300 + orbit_radius_x * 1.75 * math.cos(orbit_angle * 0.8)
+        planet4_y = 300 + orbit_radius_y * 2 * math.sin(orbit_angle * 0.8)
+
+        # Draw the orbiting circles
+        pg.draw.circle(screen, "red", (int(planet1_x), int(planet1_y)), 20)
+        pg.draw.circle(screen, "green", (int(planet2_x), int(planet2_y)), 15)
+        pg.draw.circle(screen, "pink", (int(planet3_x), int(planet3_y)), 17)
+        pg.draw.circle(screen, "blue", (int(planet4_x), int(planet4_y)), 20)
+
+
+        # Update the orbit angle for the next frame
+        orbit_angle += orbit_speed
+
+        # Update the display
+        pg.display.upudate()
+
+
+if __name__ == '__main__':
+    main()
